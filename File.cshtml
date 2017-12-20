@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = null;
+}
+<div style="height:15px;background-color:#ffd800">NORMAL FİLE UPLOAD</div>
+<br />
+<br />
+@* AJAX KULLANILMADAN DOSYA YÜKLEME*@
+<form action="/Home/SaveFile" method="post" enctype="multipart/form-data" class="form-horizontal">
+    Name : <input name="Name" type="text" /> <br />
+    Price : <input name="Price" type="number" /> <br />
+    Image : <input name="Image" type="file" /> <br />
+    <input type="submit" value="Save" />
+</form>
+<br />
+<div style="height:15px;background-color:#4cff00">AJAXK İLE FİLE UPLOAD</div>
+<br />
+<br />
+@* AJAX İLE  DOSYA YÜKLEME*@
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<div>
+    Name : <input id="txtName" type="text" /> <br />
+    Price : <input id="txtPrice" type="text" /> <br />
+    Image : <input id="txtFile" type="file" /> <br />
+    <input type="submit" value="Save" id="AjaxFileUpload" />
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#AjaxFileUpload").click(function () {
+            var data = new FormData();
+            var myFiles = $("#txtFile").get(0).files;
+            if (myFiles.length > 0) {
+                data.append("DenemeFile", myFiles[0]);
+            }
+            data.append("DenemeName", $("#txtName").val());
+            data.append("DenemePrice", $("#txtPrice").val());
+
+            var settings = {
+                type: "POST",
+                url: "/Home/FileUploadAjax",
+                data: data,
+                contentType: false,
+                processData: false,
+                sucess: function (r) {
+                    console.log(r);
+                },
+                error: function () {
+
+                }
+            };
+            $.ajax(settings);
+            return false;
+        });
+
+
+    });
+
+</script>
+
+
